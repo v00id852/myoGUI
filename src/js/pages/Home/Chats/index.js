@@ -132,9 +132,9 @@ export default class Chats extends Component {
                                             [classes.green]: false,
                                             [classes.red]: false
                                         })}>
-                                            <img
-                                                className="disabledDrag"
-                                                src={e.HeadImgUrl} />
+                                            <i
+                                                className={'disabledDrag' + ' ' + e.HeadImgUrl}
+                                            />
                                         </div>
 
                                         <div className={classes.info}>

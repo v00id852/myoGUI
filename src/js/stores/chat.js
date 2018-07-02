@@ -205,7 +205,22 @@ async function updateMenus({ conversations = [], contacts = [] }) {
 }
 
 class Chat {
-    @observable sessions = [];
+    menu = [
+        {
+            'HeadImgUrl': 'icon-ion-android-hand',
+            'RemarkName': '聊天'
+        },
+        {
+            'HeadImgUrl': 'icon-ion-android-desktop',
+            'RemarkName': '展示'
+
+        },
+        {
+            'HeadImgUrl': 'icon-ion-android-done-all',
+            'RemarkName': '矫正'
+        },
+    ];
+    @observable sessions = this.menu;
     @observable messages = new Map();
     @observable user = false;
     @observable showConversation = true;

@@ -1,3 +1,8 @@
+:root {
+    --icon-color: #777;
+    --active: #34b7f1;
+    --shadow-color: #eaedea;
+}
 
 .container {
     width: 100%;
@@ -29,6 +34,11 @@
         justify-content: space-between;
         align-items: center;
     }
+
+    & i {
+          color: var(--active);
+          font-size: 26px;
+      }
 
     &.active,
     &:hover {
