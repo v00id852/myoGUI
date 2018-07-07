@@ -17,6 +17,11 @@ ElectronCookies.enable({
 });
 
 class App extends Component {
+    async componentWillMount() {
+        if (window.navigator.onLine) {
+            await stores.session.connectWs();
+        }
+    }
     // async componentWillMount() {
     //     if (window.navigator.onLine) {
     //         await stores.session.hasLogin();

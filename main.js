@@ -34,6 +34,8 @@ const createMainWindow = () => {
 
     mainWindow.setMenu(null);
 
+    mainWindow.webContents.openDevTools();
+
     ipcMain.on('websocket-disconnected', event => {
 
     });

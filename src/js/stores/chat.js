@@ -355,103 +355,113 @@ class Chat {
         // hasUnreadMessage(self.messages);
     }
 
-    @action async addMessage(message, sync = false) {
-        /* eslint-disable */
-        var from = message.FromUserName;
-        var user = await contacts.getUser(from);
-        var list = self.messages.get(from);
-        var sessions = self.sessions;
-        var stickyed = [];
-        var normaled = [];
-        /* eslint-enable */
-
-        if (!user) {
-            return console.error('Got an invalid message: %o', message);
-        }
-
-        // Add the messages of your sent on phone to the chat sets
-        if (sync) {
-            list = self.messages.get(message.ToUserName);
-            from = message.ToUserName;
-            user = contacts.memberList.find(e => e.UserName === from);
-
-            message.isme = true;
-            message.HeadImgUrl = session.user.User.HeadImgUrl;
-            message.FromUserName = message.ToUserName;
-            message.ToUserName = user.UserName;
-        }
-
-        // User is already in the chat set
-        if (list) {
-            // Swap the chatset order
-            let index = self.sessions.findIndex(e => e.UserName === from);
-
-            if (index !== -1) {
-                sessions = [
-                    ...self.sessions.slice(index, index + 1),
-                    ...self.sessions.slice(0, index),
-                    ...self.sessions.slice(index + 1, self.sessions.length)
-                ];
-            } else {
-                // When user has removed should add to chat set
-                sessions = [user, ...self.sessions];
-            }
-
-            // Drop the duplicate message
-            if (!list.data.find(e => e.NewMsgId === message.NewMsgId)) {
-                let title = user.RemarkName || user.NickName;
-
-                message = await resolveMessage(message);
-
-                if (!helper.isMuted(user)
-                    && !sync
-                    && settings.showNotification) {
-                    let notification = new window.Notification(title, {
-                        icon: user.HeadImgUrl,
-                        body: helper.getMessageContent(message),
-                        vibrate: [200, 100, 200],
-                    });
-
-                    notification.onclick = () => {
-                        ipcRenderer.send('show-window');
-                    };
-                }
-                list.data.push(message);
-            }
-        } else {
-            // User is not in chat set
-            sessions = [user, ...self.sessions];
+    @action async addMessage(message, username) {
+        let list = self.messages.get(username);
+        if (list) { list.data.push(message); } else {
             list = {
-                data: [message],
-                unread: 0,
+                data: [message]
             };
-            self.messages.set(from, list);
+            self.messages.set(username, list);
         }
-
-        if (self.user.UserName === from) {
-            // Message has readed
-            list.unread = list.data.length;
-        }
-
-        sessions = sessions.map(e => {
-            // Catch the contact update, eg: MsgType = 10000, chat room name has changed
-            var user = contacts.memberList.find(user => user.UserName === e.UserName);
-
-            // Fix sticky bug
-            if (helper.isTop(user)) {
-                stickyed.push(user);
-            } else {
-                normaled.push(user);
-            }
-        });
-
-        self.sessions.replace([...stickyed, ...normaled]);
-
-        hasUnreadMessage(self.messages);
-        updateMenus({
-            conversations: self.sessions.slice(0, 10),
-        });
     }
+
+    // @action async addMessage(message, sync = false) {
+    //     /* eslint-disable */
+    //     var from = message.FromUserName;
+    //     var user = await contacts.getUser(from);
+    //     var list = self.messages.get(from);
+    //     var sessions = self.sessions;
+    //     var stickyed = [];
+    //     var normaled = [];
+    //     /* eslint-enable */
+    //
+    //     if (!user) {
+    //         return console.error('Got an invalid message: %o', message);
+    //     }
+    //
+    //     // Add the messages of your sent on phone to the chat sets
+    //     if (sync) {
+    //         list = self.messages.get(message.ToUserName);
+    //         from = message.ToUserName;
+    //         user = contacts.memberList.find(e => e.UserName === from);
+    //
+    //         message.isme = true;
+    //         message.HeadImgUrl = session.user.User.HeadImgUrl;
+    //         message.FromUserName = message.ToUserName;
+    //         message.ToUserName = user.UserName;
+    //     }
+    //
+    //     // User is already in the chat set
+    //     if (list) {
+    //         // Swap the chatset order
+    //         let index = self.sessions.findIndex(e => e.UserName === from);
+    //
+    //         if (index !== -1) {
+    //             sessions = [
+    //                 ...self.sessions.slice(index, index + 1),
+    //                 ...self.sessions.slice(0, index),
+    //                 ...self.sessions.slice(index + 1, self.sessions.length)
+    //             ];
+    //         } else {
+    //             // When user has removed should add to chat set
+    //             sessions = [user, ...self.sessions];
+    //         }
+    //
+    //         // Drop the duplicate message
+    //         if (!list.data.find(e => e.NewMsgId === message.NewMsgId)) {
+    //             let title = user.RemarkName || user.NickName;
+    //
+    //             message = await resolveMessage(message);
+    //
+    //             if (!helper.isMuted(user)
+    //                 && !sync
+    //                 && settings.showNotification) {
+    //                 let notification = new window.Notification(title, {
+    //                     icon: user.HeadImgUrl,
+    //                     body: helper.getMessageContent(message),
+    //                     vibrate: [200, 100, 200],
+    //                 });
+    //
+    //                 notification.onclick = () => {
+    //                     ipcRenderer.send('show-window');
+    //                 };
+    //             }
+    //             list.data.push(message);
+    //         }
+    //     } else {
+    //         // User is not in chat set
+    //         sessions = [user, ...self.sessions];
+    //         list = {
+    //             data: [message],
+    //             unread: 0,
+    //         };
+    //         self.messages.set(from, list);
+    //     }
+    //
+    //     if (self.user.UserName === from) {
+    //         // Message has readed
+    //         list.unread = list.data.length;
+    //     }
+    //
+    //     sessions = sessions.map(e => {
+    //         // Catch the contact update, eg: MsgType = 10000, chat room name has changed
+    //         var user = contacts.memberList.find(user => user.UserName === e.UserName);
+    //
+    //         // Fix sticky bug
+    //         if (helper.isTop(user)) {
+    //             stickyed.push(user);
+    //         } else {
+    //             normaled.push(user);
+    //         }
+    //     });
+    //
+    //     self.sessions.replace([...stickyed, ...normaled]);
+    //
+    //     hasUnreadMessage(self.messages);
+    //     updateMenus({
+    //         conversations: self.sessions.slice(0, 10),
+    //     });
+    // }
 
     @action async sendTextMessage(auth, message, isForward) {
         var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxsendmsg`, {

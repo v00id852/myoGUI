@@ -2,6 +2,7 @@
 /* eslint-disable no-eval */
 import axios from 'axios';
 import { observable, action } from 'mobx';
+import Sockette from 'sockette';
 
 import helper from 'utils/helper';
 import storage from 'utils/storage';
@@ -17,8 +18,33 @@ class Session {
     @observable code;
     @observable avatar;
     @observable user;
-
+    @observable connection;
+    socketUrl = 'ws://localhost:2233';
     syncKey;
+
+    connectWs() {
+        self.connection = new Sockette(this.socketUrl, {
+            timeout: 5e3,
+            maxAttempts: 5,
+            onmessage: e => {
+                this.parseWsMessage(e.data);
+            }
+        });
+    }
+
+    parseWsMessage(message) {
+        let wsData = new Map(JSON.parse(message));
+        switch (wsData.get('type')) {
+            case 'myo':
+                let chatMessage = {
+                    'isme': false,
+                    'Content': message,
+                    'MsgType': 1,
+                    'location': false
+                };
+                chat.addMessage(chatMessage, 'myo');
+        }
+    }
 
     genSyncKey(list) {
         return (self.syncKey = list.map(e => `${e.Key}_${e.Val}`).join('|'));

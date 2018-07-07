@@ -283,10 +283,10 @@ export default class ChatContent extends Component {
             return (
                 <div className={clazz('unread', classes.message, {
                     // File is uploading
-                    [classes.uploading]: message.uploading === true,
+                    // [classes.uploading]: message.uploading === true,
 
                     [classes.isme]: message.isme,
-                    [classes.isText]: type === 1 && !message.location,
+                    [classes.isText]: type === 1,
                     [classes.isLocation]: type === 1 && message.location,
                     [classes.isImage]: type === 3,
                     [classes.isEmoji]: type === 47 || type === 49 + 8,
