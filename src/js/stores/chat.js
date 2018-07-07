@@ -208,22 +208,26 @@ class Chat {
     menu = [
         {
             'HeadImgUrl': 'icon-ion-android-hand',
-            'RemarkName': '聊天'
+            'RemarkName': '聊天',
+            'UserName': '聊天'
         },
         {
             'HeadImgUrl': 'icon-ion-android-desktop',
-            'RemarkName': '展示'
+            'RemarkName': '展示',
+            'UserName': '展示'
 
         },
         {
             'HeadImgUrl': 'icon-ion-android-done-all',
-            'RemarkName': '矫正'
+            'RemarkName': '矫正',
+            'UserName': '矫正'
         },
     ];
     @observable sessions = this.menu;
     @observable messages = new Map();
     @observable user = false;
     @observable showConversation = true;
+    @observable isconnected = false;
 
     @action toggleConversation(show = !self.showConversation) {
         self.showConversation = show;
@@ -312,42 +316,43 @@ class Chat {
     }
 
     @action chatTo(user, onTop) {
-        var sessions = self.sessions;
-        var stickyed = [];
-        var normaled = [];
-        var index = self.sessions.findIndex(e => e.UserName === user.UserName);
+        // var sessions = self.sessions;
+        // var stickyed = [];
+        // var normaled = [];
+        // var index = self.sessions.findIndex(e => e.UserName === user.UserName);
+        //
+        // if (index === -1) {
+        //     // User not in chatset
+        //     sessions = [user, ...self.sessions];
+        //
+        //     self.messages.set(user.UserName, {
+        //         data: [],
+        //         unread: 0,
+        //     });
+        // } else {
+        //     if (onTop === true) {
+        //         sessions = [
+        //             ...self.sessions.slice(index, index + 1),
+        //             ...self.sessions.slice(0, index),
+        //             ...self.sessions.slice(index + 1, self.sessions.length)
+        //         ];
+        //     }
+        // }
 
-        if (index === -1) {
-            // User not in chatset
-            sessions = [user, ...self.sessions];
+        // sessions.map(e => {
+        //     if (helper.isTop(e)) {
+        //         stickyed.push(e);
+        //     } else {
+        //         normaled.push(e);
+        //     }
+        // });
 
-            self.messages.set(user.UserName, {
-                data: [],
-                unread: 0,
-            });
-        } else {
-            if (onTop === true) {
-                sessions = [
-                    ...self.sessions.slice(index, index + 1),
-                    ...self.sessions.slice(0, index),
-                    ...self.sessions.slice(index + 1, self.sessions.length)
-                ];
-            }
-        }
-
-        sessions.map(e => {
-            if (helper.isTop(e)) {
-                stickyed.push(e);
-            } else {
-                normaled.push(e);
-            }
-        });
-
-        self.sessions.replace([...stickyed, ...normaled]);
+        // self.sessions.replace([...stickyed, ...normaled]);
         self.user = user;
+        // if (!self.isconnected) { ipcRenderer.send('websocket-disconnected'); }
         self.markedRead(user.UserName);
 
-        hasUnreadMessage(self.messages);
+        // hasUnreadMessage(self.messages);
     }
 
     @action async addMessage(message, sync = false) {

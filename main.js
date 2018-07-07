@@ -1,5 +1,5 @@
 import pkg from './package.json';
-import {app, BrowserWindow} from 'electron';
+import {app, BrowserWindow, ipcMain} from 'electron';
 
 let forceQuit = true;
 let mainWindow;
@@ -33,6 +33,10 @@ const createMainWindow = () => {
     });
 
     mainWindow.setMenu(null);
+
+    ipcMain.on('websocket-disconnected', event => {
+
+    });
 };
 
 app.setName(pkg.name);

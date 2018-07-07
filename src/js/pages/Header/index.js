@@ -20,7 +20,10 @@ export default class Header extends Component {
     render() {
         return (
             <header className={classes.container}>
-                <h1>{this.getTitle()}</h1>
+                <h1>
+                    {this.getTitle()}
+                    <i className="icon-ion-pinpoint" />
+                </h1>
             </header>
         );
     }
