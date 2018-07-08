@@ -213,12 +213,6 @@ class Chat {
             'NickName': '聊天'
         },
         {
-            'HeadImgUrl': 'desktop',
-            'RemarkName': '展示',
-            'UserName': '展示'
-
-        },
-        {
             'HeadImgUrl': 'wrench',
             'RemarkName': '矫正',
             'UserName': '矫正'
@@ -349,6 +343,7 @@ class Chat {
         // });
 
         // self.sessions.replace([...stickyed, ...normaled]);
+        self.user = undefined;  // 清空原来的user，用于重新渲染聊天界面
         self.user = user;
         // if (!self.isconnected) { ipcRenderer.send('websocket-disconnected'); }
         self.markedRead(user.UserName);

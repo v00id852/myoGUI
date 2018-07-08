@@ -157,7 +157,7 @@ export default class MessageInput extends Component {
                     id="messageInput"
                     onPaste={e => this.handlePaste(e)}
                     onKeyPress={e => this.handleEnter(e)}
-                    placeholder="Type something to send..."
+                    placeholder=""
                     readOnly={!canisend}
                     ref="input"
                     type="text"

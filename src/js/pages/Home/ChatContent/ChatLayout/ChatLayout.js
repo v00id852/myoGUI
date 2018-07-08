@@ -76,6 +76,63 @@ export default class ChatLayout extends Component {
         });
     };
 
+    componentDidUpdate() {
+        var viewport = this.refs.viewport;
+        var tips = this.refs.tips;
+
+        if (viewport) {
+            let newestMessage = this.props.messages.get(this.props.user.UserName).data.slice(-1)[0];
+
+            // Scroll to bottom when you sent message
+            if (newestMessage) {
+                viewport.scrollTop = viewport.scrollHeight;
+            }
+
+            // // Show the unread messages count
+            // if (viewport.scrollTop < this.scrollTop) {
+            //     let counter = viewport.querySelectorAll(`.${classes.message}.unread`).length;
+            //
+            //     if (counter) {
+            //         tips.innerHTML = `You has ${counter} unread messages.`;
+            //         tips.classList.add(classes.show);
+            //     }
+            //     return;
+            // }
+            //
+            // // Auto scroll to bottom when message has been loaded
+            // Array.from(images).map(e => {
+            //     on(e, 'load', ev => {
+            //         off(e, 'load');
+            //         e.classList.remove('unload');
+            //         viewport.scrollTop = viewport.scrollHeight;
+            //         this.scrollTop = viewport.scrollTop;
+            //     });
+            //
+            //     on(e, 'error', ev => {
+            //         var fallback = ev.target.dataset.fallback;
+            //
+            //         if (fallback === 'undefined') {
+            //             fallback = 'assets/images/broken.png';
+            //         }
+            //
+            //         ev.target.src = fallback;
+            //         ev.target.removeAttribute('data-fallback');
+            //
+            //         off(e, 'error');
+            //     });
+            // });
+            //
+            // // Hide the unread message count
+            // tips.classList.remove(classes.show);
+            // viewport.scrollTop = viewport.scrollHeight;
+            // this.scrollTop = viewport.scrollTop;
+            //
+            // // Mark message has been loaded
+            // Array.from(viewport.querySelectorAll(`.${classes.message}.unread`)).map(e => e.classList.remove('unread'));
+        }
+    }
+
+
     render() {
         var title = this.props.user.NickName;
         return (
@@ -101,7 +158,6 @@ export default class ChatLayout extends Component {
 
                             <div
                                 className={classes.messages}
-                                onScroll={e => this.handleScroll(e)}
                                 ref="viewport">
                                 {
                                     this.renderMessages(this.props.messages.get(this.props.user.UserName), this.props.user)

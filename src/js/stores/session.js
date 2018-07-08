@@ -21,18 +21,22 @@ class Session {
     @observable avatar;
     @observable user;
     @observable connection;
+    @observable wsState = false;
     @observable incompleteMessage = '';
 
-    socketUrl = 'ws://localhost:2233';
+    socketUrl = 'ws://192.168.0.116:2233';
     syncKey;
 
     connectWs() {
         self.connection = new Sockette(this.socketUrl, {
             timeout: 5e3,
             maxAttempts: 5,
+            onopen: e => { self.wsState = true; },
             onmessage: e => {
                 this.parseWsMessage(e.data);
-            }
+            },
+            onclose: e => { self.wsState = false; },
+            onerror: e => { self.wsState = false; }
         });
     }
 
@@ -44,14 +48,14 @@ class Session {
         return strMap;
     }
 
-    parseWsMessage(message) {
+    parseWsMessage = (message) => {
         console.log(message);
         let wsData = this.objToStrMap(JSON.parse(message));
         let chatMessage = {};
         switch (wsData.get('type')) {
             case 'myo':
                 chatMessage = {
-                    'isme': false,
+                    'isme': true,
                     'Content': wsData.get('data'),
                     'MsgType': 1,
                     'location': false,
@@ -61,11 +65,11 @@ class Session {
                 break;
             case 'voice':
                 chatMessage = {
-                    'isme': true,
+                    'isme': false,
                     'Content': wsData.get('data'),
                     'MsgType': 1,
                     'location': false,
-                    'nickname': 'voice'
+                    'nickname': '麦克风'
                 };
                 chat.addMessage(chatMessage, '聊天');
                 break;
@@ -74,6 +78,17 @@ class Session {
                 break;
             case 'complete':
                 this.incompleteMessage = '';
+                chatMessage = {
+                    'isme': true,
+                    'Content': wsData.get('data'),
+                    'MsgType': 1,
+                    'location': false,
+                    'nickname': '手环'
+                };
+                chat.addMessage(chatMessage, '聊天');
+                chat.chatTo(chat.user);
+                break;
+
         }
     }
 

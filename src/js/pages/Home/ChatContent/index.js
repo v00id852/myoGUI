@@ -553,53 +553,52 @@ export default class ChatContent extends Component {
             let images = viewport.querySelectorAll('img.unload');
 
             // Scroll to bottom when you sent message
-            if (newestMessage
-                    && newestMessage.isme) {
+            if (newestMessage) {
                 viewport.scrollTop = viewport.scrollHeight;
                 return;
             }
 
-            // Show the unread messages count
-            if (viewport.scrollTop < this.scrollTop) {
-                let counter = viewport.querySelectorAll(`.${classes.message}.unread`).length;
-
-                if (counter) {
-                    tips.innerHTML = `You has ${counter} unread messages.`;
-                    tips.classList.add(classes.show);
-                }
-                return;
-            }
-
-            // Auto scroll to bottom when message has been loaded
-            Array.from(images).map(e => {
-                on(e, 'load', ev => {
-                    off(e, 'load');
-                    e.classList.remove('unload');
-                    viewport.scrollTop = viewport.scrollHeight;
-                    this.scrollTop = viewport.scrollTop;
-                });
-
-                on(e, 'error', ev => {
-                    var fallback = ev.target.dataset.fallback;
-
-                    if (fallback === 'undefined') {
-                        fallback = 'assets/images/broken.png';
-                    }
-
-                    ev.target.src = fallback;
-                    ev.target.removeAttribute('data-fallback');
-
-                    off(e, 'error');
-                });
-            });
-
-            // Hide the unread message count
-            tips.classList.remove(classes.show);
-            viewport.scrollTop = viewport.scrollHeight;
-            this.scrollTop = viewport.scrollTop;
-
-            // Mark message has been loaded
-            Array.from(viewport.querySelectorAll(`.${classes.message}.unread`)).map(e => e.classList.remove('unread'));
+            // // Show the unread messages count
+            // if (viewport.scrollTop < this.scrollTop) {
+            //     let counter = viewport.querySelectorAll(`.${classes.message}.unread`).length;
+            //
+            //     if (counter) {
+            //         tips.innerHTML = `You has ${counter} unread messages.`;
+            //         tips.classList.add(classes.show);
+            //     }
+            //     return;
+            // }
+            //
+            // // Auto scroll to bottom when message has been loaded
+            // Array.from(images).map(e => {
+            //     on(e, 'load', ev => {
+            //         off(e, 'load');
+            //         e.classList.remove('unload');
+            //         viewport.scrollTop = viewport.scrollHeight;
+            //         this.scrollTop = viewport.scrollTop;
+            //     });
+            //
+            //     on(e, 'error', ev => {
+            //         var fallback = ev.target.dataset.fallback;
+            //
+            //         if (fallback === 'undefined') {
+            //             fallback = 'assets/images/broken.png';
+            //         }
+            //
+            //         ev.target.src = fallback;
+            //         ev.target.removeAttribute('data-fallback');
+            //
+            //         off(e, 'error');
+            //     });
+            // });
+            //
+            // // Hide the unread message count
+            // tips.classList.remove(classes.show);
+            // viewport.scrollTop = viewport.scrollHeight;
+            // this.scrollTop = viewport.scrollTop;
+            //
+            // // Mark message has been loaded
+            // Array.from(viewport.querySelectorAll(`.${classes.message}.unread`)).map(e => e.classList.remove('unread'));
         }
     }
 

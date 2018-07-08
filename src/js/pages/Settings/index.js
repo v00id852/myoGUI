@@ -1,10 +1,7 @@
 
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Terminal } from 'xterm';
-
 import classes from './style.css';
-import Switch from 'components/Switch';
 // import Avatar from 'components/Avatar';
 // import helper from 'utils/helper';
 
@@ -38,55 +35,19 @@ export default class Settings extends Component {
         super(props);
         this.terminal = React.createRef();
     }
-
-    renderPlugins(plugins) {
-        return plugins.map((e, index) => {
-            return (
-                <div
-                    className={classes.plugin}
-                    key={index}>
-                    <img src={e.icon} />
-
-                    <div className={classes.detail}>
-                        <p>
-                            <span>{e.name}</span>
-                            <span className={classes.version}>{e.version}</span>
-                        </p>
-                        <p>
-                            <a
-                                href={e.link}
-                                target="_bank">
-                                View on Github
-                            </a>
-                        </p>
-                        <div className={classes.description}>{e.description}</div>
-                    </div>
-
-                    <Switch defaultChecked={e.enabled} />
-                </div>
-            );
-        });
-    }
-
     // choiceDownloadDir() {
     //     this.refs.downloads.click();
     // }
     //
     componentDidMount() {
-        this.initTerminal();
+        this.refs.terminal.focus();
         // this.refs.downloads.webkitdirectory = true;
-    }
-
-    initTerminal() {
-        var term = new Terminal();
-        term.open(this.terminal.current);
-        term.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ');
     }
 
     render() {
         return (
             <div className={classes.tcontainer}>
-                <webview className={classes.terminal} src="http://192.168.1.105:1122/" autosize="on" />
+                <webview className={classes.terminal} ref="terminal" id="terminal" src="http://192.168.0.101:1122/" autosize="on" />
             </div>
         );
     }
