@@ -2,7 +2,7 @@ from tornado.websocket import WebSocketHandler
 from tornado.web import Application
 from tornado.ioloop import IOLoop
 import sys
-import time
+import json
 
 clients = list()
 
@@ -14,11 +14,13 @@ class EchoWebSocket(WebSocketHandler):
     def open(self):
         print("WebSocket opened")
         clients.append(self)
-        self.push_message('2+你好')
+        self.push_message(json.dumps({"type": "myo", "data": "Test"}))
+        self.push_message(json.dumps({"type": "voice", "data": "Test"}))
+        self.push_message(json.dumps({"type": "incomplete", "data": "Test"}))
 
     def on_close(self):
         print("WebSocket closed")
-        sys.exit()
+        clients.remove(self)
 
     def on_message(self, msg):
         self.push_message(msg)

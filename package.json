@@ -82,6 +82,9 @@
   },
   "dependencies": {
     "@exponent/electron-cookies": "^2.0.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.0-14",
+    "@fortawesome/free-solid-svg-icons": "^5.1.0-11",
+    "@fortawesome/react-fontawesome": "0.1.0-11",
     "auto-launch": "^5.0.1",
     "axios": "^0.17.0",
     "browser-md5-file": "^1.0.0",
@@ -102,7 +105,8 @@
     "react-dom": "^16.0.0",
     "react-router-dom": "^4.2.2",
     "sockette": "^2.0.0",
-    "tmp": "0.0.33"
+    "tmp": "0.0.33",
+    "xterm": "^3.4.1"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",

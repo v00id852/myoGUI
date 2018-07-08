@@ -12,6 +12,15 @@
     }
 }
 
+.tcontainer {
+    position: relative;
+}
+
+.terminal {
+    width: 100vw;
+    height: 85vh;
+}
+
 .column {
     width: 50%;
 

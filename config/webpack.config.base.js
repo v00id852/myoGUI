@@ -112,6 +112,7 @@ export default {
             utils: path.join(config.client, 'js/utils/'),
             images: path.join(config.client, 'assets/images/'),
             fonts: path.join(config.client, 'assets/fonts/'),
+            node_modules: config.node_modules
         },
     },
 };

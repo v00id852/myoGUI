@@ -3,14 +3,15 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { ipcRenderer, remote } from 'electron';
 import clazz from 'classname';
-import moment from 'moment';
+// import moment from 'moment';
 import axios from 'axios';
 
 import classes from './style.css';
-import Avatar from 'components/Avatar';
+// import Avatar from 'components/Avatar';
 import helper from 'utils/helper';
 import { parser as emojiParse } from 'utils/emoji';
 import { on, off } from 'utils/event';
+import ChatLayout from './ChatLayout/ChatLayout';
 
 @inject(stores => ({
     user: stores.chat.user,
@@ -259,7 +260,8 @@ export default class ChatContent extends Component {
 
     renderMessages(list, from) {
         return list.data.map((e, index) => {
-            var { message, user } = this.props.parseMessage(e, from);
+            let message = e;
+            let user = from;
             var type = message.MsgType;
 
             if ([
@@ -301,19 +303,20 @@ export default class ChatContent extends Component {
                     [classes.isFile]: type === 49 + 6,
                 })} key={index}>
                     <div>
-                        <Avatar
-                            src={message.isme ? message.HeadImgUrl : user.HeadImgUrl}
-                            className={classes.avatar}
-                            onClick={ev => this.props.showUserinfo(message.isme, user)} />
+                        {/* <Avatar */}
+                        {/* src={message.isme ? message.HeadImgUrl : user.HeadImgUrl} */}
+                        {/* className={classes.avatar} */}
+                        {/* onClick={ev => this.props.showUserinfo(message.isme, user)}  /> */}
 
-                        <p className={classes.username} dangerouslySetInnerHTML={{__html: user.NickName}} />
+                        <p className={classes.username} dangerouslySetInnerHTML={{__html: message.nickname}} />
 
                         <div className={classes.content}>
                             <p
                                 onContextMenu={e => this.showMessageAction(message)}
-                                dangerouslySetInnerHTML={{__html: this.getMessageContent(message)}} />
+                                // dangerouslySetInnerHTML={{__html: this.getMessageContent(message)}}
+                                dangerouslySetInnerHTML={{__html: message.Content}} />
 
-                            <span className={classes.times}>{ moment(message.CreateTime * 1000).fromNow() }</span>
+                            {/* <span className={classes.times}>{ moment(message.CreateTime * 1000).fromNow() }</span> */}
                         </div>
                     </div>
                 </div>
@@ -608,67 +611,26 @@ export default class ChatContent extends Component {
         }
     }
 
+    changeLayout() {
+        var { user, messages } = this.props;
+        if (!user) return <ChatLayout user={user} messages={messages} />;
+        switch (user.UserName) {
+            case '聊天':
+                return <ChatLayout user={user} messages={messages} />;
+            case '展示':
+                return <div />;
+            default:
+                return <ChatLayout user={user} messages={messages} />;
+        }
+    }
+
     render() {
-        var { loading, showConversation, user, messages } = this.props;
-        var title = user.RemarkName || user.NickName;
-        var signature = user.Signature;
+        var { loading } = this.props;
 
         if (loading) return false;
 
         return (
-            <div
-                className={clazz(classes.container, {
-                    [classes.hideConversation]: !showConversation,
-                })}
-                onClick={e => this.handleClick(e)}>
-                {
-                    user ? (
-                        <div>
-                            <header>
-                                <div className={classes.info}>
-                                    <p
-                                        dangerouslySetInnerHTML={{__html: title}}
-                                        title={title} />
-
-                                    <span
-                                        className={classes.signature}
-                                        dangerouslySetInnerHTML={{__html: signature || 'No Signature'}}
-                                        onClick={e => this.props.showMembers(user)}
-                                        title={signature} />
-                                </div>
-
-                                <i
-                                    className="icon-ion-android-more-vertical"
-                                    onClick={() => this.showMenu()} />
-                            </header>
-
-                            <div
-                                className={classes.messages}
-                                onScroll={e => this.handleScroll(e)}
-                                ref="viewport">
-                                {
-                                    this.renderMessages(messages.get(user.UserName), user)
-                                }
-                            </div>
-                        </div>
-                    ) : (
-                        <div className={clazz({
-                            [classes.noselected]: !user,
-                        })}>
-                            <img
-                                className="disabledDrag"
-                                src="assets/images/noselected.png" />
-                            <h1>No Chat selected :(</h1>
-                        </div>
-                    )
-                }
-
-                <div
-                    className={classes.tips}
-                    ref="tips">
-                    Unread message.
-                </div>
-            </div>
+            this.changeLayout()
         );
     }
 }

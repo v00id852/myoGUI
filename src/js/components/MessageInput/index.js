@@ -14,6 +14,7 @@ export default class MessageInput extends Component {
         user: PropTypes.array.isRequired,
         confirmSendImage: PropTypes.func.isRequired,
         process: PropTypes.func.isRequired,
+        message: PropTypes.string
     };
 
     static defaultProps = {
@@ -159,7 +160,8 @@ export default class MessageInput extends Component {
                     placeholder="Type something to send..."
                     readOnly={!canisend}
                     ref="input"
-                    type="text" />
+                    type="text"
+                    value={this.props.message} />
 
             </div>
         );

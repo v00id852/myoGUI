@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { remote } from 'electron';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clazz from 'classname';
 import moment from 'moment';
 
@@ -132,9 +133,7 @@ export default class Chats extends Component {
                                             [classes.green]: false,
                                             [classes.red]: false
                                         })}>
-                                            <i
-                                                className={'disabledDrag' + ' ' + e.HeadImgUrl}
-                                            />
+                                            <FontAwesomeIcon icon={e.HeadImgUrl} color="black" size="2x" fixedWidth={true} />
                                         </div>
 
                                         <div className={classes.info}>
@@ -142,9 +141,9 @@ export default class Chats extends Component {
                                                 className={classes.username}
                                                 dangerouslySetInnerHTML={{__html: e.RemarkName || e.NickName}} />
 
-                                            <span
-                                                className={classes.message}
-                                                dangerouslySetInnerHTML={{__html: 'No Message'}} />
+                                            {/* <span */}
+                                            {/* className={classes.message} */}
+                                            {/* dangerouslySetInnerHTML={{__html: 'No Message'}} /> */}
                                         </div>
                                     </div>
                                 </div>

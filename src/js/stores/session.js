@@ -10,6 +10,8 @@ import { normalize } from 'utils/emoji';
 import chat from './chat';
 import contacts from './contacts';
 
+// import footer from './'
+
 const CancelToken = axios.CancelToken;
 
 class Session {
@@ -19,6 +21,8 @@ class Session {
     @observable avatar;
     @observable user;
     @observable connection;
+    @observable incompleteMessage = '';
+
     socketUrl = 'ws://localhost:2233';
     syncKey;
 
@@ -32,17 +36,44 @@ class Session {
         });
     }
 
+    objToStrMap(obj) {
+        let strMap = new Map();
+        for (let k of Object.keys(obj)) {
+            strMap.set(k, obj[k]);
+        }
+        return strMap;
+    }
+
     parseWsMessage(message) {
-        let wsData = new Map(JSON.parse(message));
+        console.log(message);
+        let wsData = this.objToStrMap(JSON.parse(message));
+        let chatMessage = {};
         switch (wsData.get('type')) {
             case 'myo':
-                let chatMessage = {
+                chatMessage = {
                     'isme': false,
-                    'Content': message,
+                    'Content': wsData.get('data'),
                     'MsgType': 1,
-                    'location': false
+                    'location': false,
+                    'nickname': '手环'
                 };
-                chat.addMessage(chatMessage, 'myo');
+                chat.addMessage(chatMessage, '聊天');
+                break;
+            case 'voice':
+                chatMessage = {
+                    'isme': true,
+                    'Content': wsData.get('data'),
+                    'MsgType': 1,
+                    'location': false,
+                    'nickname': 'voice'
+                };
+                chat.addMessage(chatMessage, '聊天');
+                break;
+            case 'incomplete':
+                this.incompleteMessage = wsData.get('data');
+                break;
+            case 'complete':
+                this.incompleteMessage = '';
         }
     }
 

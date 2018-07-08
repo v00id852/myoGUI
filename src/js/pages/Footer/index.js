@@ -7,6 +7,8 @@ import classes from './style.css';
 import Home from './Home';
 import Contacts from './Contacts';
 import Settings from './Settings';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faUserCircle, faTerminal } from '@fortawesome/free-solid-svg-icons';
 
 export default class Footer extends Component {
     render() {
@@ -27,7 +29,8 @@ export default class Footer extends Component {
                         <span className={clazz({
                             [classes.active]: pathname === '/'
                         })}>
-                            <i className="icon-ion-android-chat" />
+                            <FontAwesomeIcon icon={faBars} color="black" />
+                            {/* <i className="icon-ion-android-chat" /> */}
                         </span>
                     </Link>
 
@@ -38,7 +41,7 @@ export default class Footer extends Component {
                         <span className={clazz({
                             [classes.active]: pathname === '/contacts'
                         })}>
-                            <i className="icon-ion-ios-book-outline" />
+                            <FontAwesomeIcon icon={faUserCircle} color={'black'} />
                         </span>
                     </Link>
 
@@ -49,7 +52,7 @@ export default class Footer extends Component {
                         <span className={clazz({
                             [classes.active]: pathname === '/settings'
                         })}>
-                            <i className="icon-ion-android-more-vertical" />
+                            <FontAwesomeIcon icon={faTerminal} color={'black'} />
                         </span>
                     </Link>
                 </nav>

@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import clazz from 'classname';
 import randomColor from 'randomcolor';
 
 import classes from './style.css';
@@ -75,39 +74,40 @@ export default class Contacts extends Component {
     }
 
     render() {
-        var { query, result } = this.props.filtered;
 
-        if (query && result.length === 0) {
-            return (
-                <div className={clazz(classes.container, classes.notfound)}>
-                    <div className={classes.inner}>
-                        <img src="assets/images/crash.png" />
-                        <h1>Can't find any people matching '{query}'</h1>
-                    </div>
-                </div>
-            );
-        }
-
-        return (
-            <div className={classes.container}>
-                <div className={classes.columns}>
-                    <div className={classes.column}>
-                        {
-                            this.renderColumns(result, 0)
-                        }
-                    </div>
-                    <div className={classes.column}>
-                        {
-                            this.renderColumns(result, 1)
-                        }
-                    </div>
-                    <div className={classes.column}>
-                        {
-                            this.renderColumns(result, 2)
-                        }
-                    </div>
-                </div>
-            </div>
-        );
+        // var { query, result } = this.props.filtered;
+        //
+        // if (query && result.length === 0) {
+        //     return (
+        //         <div className={clazz(classes.container, classes.notfound)}>
+        //             <div className={classes.inner}>
+        //                 <img src="assets/images/crash.png" />
+        //                 <h1>Can't find any people matching '{query}'</h1>
+        //             </div>
+        //         </div>
+        //     );
+        // }
+        //
+        // return (
+        //     <div className={classes.container}>
+        //         <div className={classes.columns}>
+        //             <div className={classes.column}>
+        //                 {
+        //                     this.renderColumns(result, 0)
+        //                 }
+        //             </div>
+        //             <div className={classes.column}>
+        //                 {
+        //                     this.renderColumns(result, 1)
+        //                 }
+        //             </div>
+        //             <div className={classes.column}>
+        //                 {
+        //                     this.renderColumns(result, 2)
+        //                 }
+        //             </div>
+        //         </div>
+        //     </div>
+        // );
     }
 }

@@ -5,12 +5,16 @@ import { Provider } from 'mobx-react';
 import { HashRouter } from 'react-router-dom';
 import ElectronCookies from '@exponent/electron-cookies';
 import { ipcRenderer } from 'electron';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faComment, faSpinner, faDesktop, faWrench } from '@fortawesome/free-solid-svg-icons';
 
 import './global.css';
 import './assets/fonts/icomoon/style.css';
 import 'utils/albumcolors';
 import getRoutes from './js/routes';
 import stores from './js/stores';
+
+library.add(faComment, faSpinner, faDesktop, faWrench);
 
 ElectronCookies.enable({
     origin: 'https://wx.qq.com',

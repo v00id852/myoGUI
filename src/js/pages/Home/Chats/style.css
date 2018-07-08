@@ -61,6 +61,7 @@
     margin-left: 16px;
     justify-content: space-between;
     flex-direction: column;
+    font-size: 18px;
 }
 
 .username {
@@ -141,7 +142,7 @@
     .username {
         max-width: 160px;
         margin-bottom: 4px;
-        font-size: 13px;
+        font-size: 16px;
     }
 
     .message {

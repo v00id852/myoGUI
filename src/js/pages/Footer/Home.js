@@ -18,10 +18,11 @@ import MessageInput from 'components/MessageInput';
         return confirmed;
     },
     process: stores.chat.process,
+    message: stores.session.incompleteMessage
 }))
 export default class Message extends Component {
     render() {
-        var { sendMessage, showMessage, user, me = {}, confirmSendImage, process } = this.props;
+        var { sendMessage, showMessage, user, me = {}, confirmSendImage, process, message } = this.props;
 
         return (
             <MessageInput {...{
@@ -31,6 +32,7 @@ export default class Message extends Component {
                 me: me.User,
                 confirmSendImage,
                 process,
+                message
             }} />
         );
     }
