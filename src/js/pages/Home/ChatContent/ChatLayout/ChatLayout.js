@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import clazz from 'classname';
 
 import classes from '../style.css';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 export default class ChatLayout extends Component {
     static propTypes = {
@@ -136,45 +138,50 @@ export default class ChatLayout extends Component {
     render() {
         var title = this.props.user.NickName;
         return (
-            <div
-                className={clazz(classes.container, {
-                    [classes.hideConversation]: false,
-                })}
-                onClick={e => this.handleClick(e)}>
-                {
-                    this.props.user ? (
-                        <div>
-                            <header>
-                                <div className={classes.info}>
-                                    <p
-                                        dangerouslySetInnerHTML={{__html: title}}
-                                        title={title} />
+            <div className={classes.chatContainer}>
+                <div
+                    className={clazz(classes.container, {
+                        [classes.hideConversation]: false,
+                    })}
+                    onClick={e => this.handleClick(e)}>
+                    {
+                        this.props.user ? (
+                            <div>
+                                <header>
+                                    <div className={classes.info}>
+                                        <p
+                                            dangerouslySetInnerHTML={{__html: title}}
+                                            title={title} />
+                                    </div>
+
+                                    <i
+                                        className="icon-ion-android-more-vertical"
+                                        onClick={() => this.showMenu()} />
+                                </header>
+
+                                <div
+                                    className={classes.messages}
+                                    ref="viewport">
+                                    {
+                                        this.renderMessages(this.props.messages.get(this.props.user.UserName), this.props.user)
+                                    }
                                 </div>
-
-                                <i
-                                    className="icon-ion-android-more-vertical"
-                                    onClick={() => this.showMenu()} />
-                            </header>
-
-                            <div
-                                className={classes.messages}
-                                ref="viewport">
-                                {
-                                    this.renderMessages(this.props.messages.get(this.props.user.UserName), this.props.user)
-                                }
                             </div>
-                        </div>
-                    ) : (
-                        <div className={clazz({
-                            [classes.noselected]: !this.props.user,
-                        })}>
-                            <img
-                                className="disabledDrag"
-                                src="assets/images/noselected.png" />
-                            <h1>No Chat selected :(</h1>
-                        </div>
-                    )
-                }
+                        ) : (
+                            <div className={clazz({
+                                [classes.noselected]: !this.props.user,
+                            })}>
+                                <img
+                                    className="disabledDrag"
+                                    src="assets/images/noselected.png" />
+                                <h1>No Chat selected :(</h1>
+                            </div>
+                        )
+                    }
+                </div>
+                <IconButton aria-label="Delete">
+                    <DeleteIcon />
+                </IconButton>
             </div>
         );
     }
