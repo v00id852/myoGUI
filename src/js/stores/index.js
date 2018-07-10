@@ -13,6 +13,7 @@ import batchsend from './batchsend';
 import settings from './settings';
 import snackbar from './snackbar';
 import confirmImagePaste from './confirmImagePaste';
+import control from './control'
 
 const stores = {
     session,
@@ -29,6 +30,7 @@ const stores = {
     forward,
     snackbar,
     confirmImagePaste,
+    control,
 };
 
 export default stores;

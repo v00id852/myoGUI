@@ -24,7 +24,8 @@ class Session {
     @observable wsState = false;
     @observable incompleteMessage = '';
 
-    socketUrl = 'ws://192.168.0.116:2233';
+    socketUrl = 'ws://192.168.0.116:2233?username=gui';
+    shellUrl = 'http://192.168.0.116:1122';
     syncKey;
 
     connectWs() {
@@ -72,6 +73,7 @@ class Session {
                     'nickname': '麦克风'
                 };
                 chat.addMessage(chatMessage, '聊天');
+                chat.chatTo(chat.user);
                 break;
             case 'incomplete':
                 this.incompleteMessage = wsData.get('data');

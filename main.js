@@ -6,9 +6,9 @@ let mainWindow;
 
 const createMainWindow = () => {
     mainWindow = new BrowserWindow({
-        x: 745,
+        x: 800,
         y: 500,
-        minWidth: 745,
+        minWidth: 800,
         minHeight: 450,
         transparent: true,
         titleBarStyle: 'hidden-inset',

@@ -53,6 +53,11 @@
     }
 }
 
+.terminal {
+    width: 70vw;
+    height: 85vh;
+}
+
 .container.hideConversation {
     & .signature,
     & header p {

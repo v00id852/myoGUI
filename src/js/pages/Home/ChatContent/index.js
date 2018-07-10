@@ -12,6 +12,7 @@ import helper from 'utils/helper';
 import { parser as emojiParse } from 'utils/emoji';
 import { on, off } from 'utils/event';
 import ChatLayout from './ChatLayout/ChatLayout';
+import AdjustLayout from "./AdjustLayout/AdjustLayout";
 
 @inject(stores => ({
     user: stores.chat.user,
@@ -20,6 +21,7 @@ import ChatLayout from './ChatLayout/ChatLayout';
     removeChat: stores.chat.removeChat,
     messages: stores.chat.messages,
     loading: stores.session.loading,
+    shellUrl: stores.session.shellUrl,
     reset: () => {
         stores.chat.user = false;
     },
@@ -611,13 +613,13 @@ export default class ChatContent extends Component {
     }
 
     changeLayout() {
-        var { user, messages } = this.props;
+        var { user, messages, shellUrl } = this.props;
         if (!user) return <ChatLayout user={user} messages={messages} />;
         switch (user.UserName) {
             case '聊天':
                 return <ChatLayout user={user} messages={messages} />;
-            case '展示':
-                return <div />;
+            case '矫正':
+                return <AdjustLayout shellUrl={shellUrl}/>;
             default:
                 return <ChatLayout user={user} messages={messages} />;
         }
