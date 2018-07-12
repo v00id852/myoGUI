@@ -32,9 +32,9 @@ const createMainWindow = () => {
         } catch (ex) { }
     });
 
-    mainWindow.setMenu(null);
-
     mainWindow.webContents.openDevTools();
+
+    mainWindow.setMenu(null);
 
     ipcMain.on('websocket-disconnected', event => {
 

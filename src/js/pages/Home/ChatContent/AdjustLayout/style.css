@@ -18,13 +18,13 @@
     margin-top: 16px;
     margin-bottom: 16px;
     width: 100%;
-    min-height: 250px;
+    min-height: 210px;
 }
 
 .logCardContent {
     display: inline-flex;
     width: 100%;
-    min-height: 250px;
+    min-height: 210px;
     align-items: center;
     justify-content: center;
 }
@@ -32,4 +32,16 @@
 .log {
     text-align: center;
     font-size: 32px;
+}
+
+.textFieldContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.formControl {
+    width: 140px;
+    margin-top: 8px;
 }

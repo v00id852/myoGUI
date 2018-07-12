@@ -9,7 +9,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 export default class ChatLayout extends Component {
     static propTypes = {
         user: PropTypes.object,
-        messages: PropTypes.object
+        messages: PropTypes.object,
+        chatTo: PropTypes.func
     };
 
     renderMessages(list, from) {
@@ -76,6 +77,12 @@ export default class ChatLayout extends Component {
                 </div>
             );
         });
+    };
+
+    clearMessages = (list) => {
+        list.data = [];
+        this.props.chatTo(this.props.user)
+
     };
 
     componentDidUpdate() {
@@ -174,12 +181,12 @@ export default class ChatLayout extends Component {
                                 <img
                                     className="disabledDrag"
                                     src="assets/images/noselected.png" />
-                                <h1>No Chat selected :(</h1>
+                                <h1>没有选择功能</h1>
                             </div>
                         )
                     }
                 </div>
-                <IconButton aria-label="Delete">
+                <IconButton aria-label="Delete" onClick={this.clearMessages}>
                     <DeleteIcon />
                 </IconButton>
             </div>

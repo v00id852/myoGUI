@@ -23,9 +23,10 @@ class Session {
     @observable connection;
     @observable wsState = false;
     @observable incompleteMessage = '';
+    @observable adjustLogContent = '';
 
-    socketUrl = 'ws://192.168.0.116:2233?username=gui';
-    shellUrl = 'http://192.168.0.116:1122';
+    socketUrl = 'ws://192.168.8.101:2233?username=gui';
+    shellUrl = 'http://192.168.8.101:1122';
     syncKey;
 
     connectWs() {
@@ -90,6 +91,9 @@ class Session {
                 chat.addMessage(chatMessage, '聊天');
                 chat.chatTo(chat.user);
                 break;
+            case 'adjust':
+                this.adjustLogContent = wsData.get('data')
+
 
         }
     }

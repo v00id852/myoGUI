@@ -22,6 +22,9 @@ import AdjustLayout from "./AdjustLayout/AdjustLayout";
     messages: stores.chat.messages,
     loading: stores.session.loading,
     shellUrl: stores.session.shellUrl,
+
+    chatTo: stores.chat.chatTo,
+
     reset: () => {
         stores.chat.user = false;
     },
@@ -81,6 +84,13 @@ import AdjustLayout from "./AdjustLayout/AdjustLayout";
         return { message, user };
     },
     showAddFriend: (user) => stores.addfriend.toggle(true, user),
+
+    runAdjust: stores.control.runAdjust,
+    stopAdjust: stores.control.stopAdjust,
+    mergeAdjust: stores.control.mergeAdjust,
+    logContent: stores.session.adjustLogContent,
+    backAdjust: stores.control.backAdjust,
+
     recallMessage: stores.chat.recallMessage,
     downloads: stores.settings.downloads,
     remeberConversation: stores.settings.remeberConversation,
@@ -613,15 +623,21 @@ export default class ChatContent extends Component {
     }
 
     changeLayout() {
-        var { user, messages, shellUrl } = this.props;
-        if (!user) return <ChatLayout user={user} messages={messages} />;
+        var { user, messages, shellUrl, chatTo } = this.props;
+        if (!user) return <ChatLayout user={user} messages={messages} chatTo={chatTo}/>;
         switch (user.UserName) {
             case '聊天':
-                return <ChatLayout user={user} messages={messages} />;
+                return <ChatLayout user={user} messages={messages} chatTo={chatTo} />;
             case '矫正':
-                return <AdjustLayout shellUrl={shellUrl}/>;
+                return <AdjustLayout shellUrl={shellUrl}
+                                     startAdjust={this.props.runAdjust}
+                                     stopAdjust={this.props.stopAdjust}
+                                     mergeAdjust={this.props.mergeAdjust}
+                                     backforward={this.props.backAdjust}
+                                     logContent={this.props.logContent}
+                />;
             default:
-                return <ChatLayout user={user} messages={messages} />;
+                return <ChatLayout user={user} messages={messages} chatTo={chatTo}/>;
         }
     }
 

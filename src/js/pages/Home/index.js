@@ -31,16 +31,6 @@ export default class Home extends Component {
                 })}>
                     <div className={classes.left}>
                         <Chats />
-
-                        {
-                            this.props.showRedIcon && (
-                                <div
-                                    className={classes.addChat}
-                                    onClick={() => this.props.newChat()}>
-                                    <i className="icon-ion-android-add" />
-                                </div>
-                            )
-                        }
                     </div>
 
                     <div className={classes.right}>

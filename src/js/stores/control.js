@@ -8,6 +8,7 @@ class Control {
     @observable RunMainButtonWithNewModelStatus = true;
     @observable StopMainButtonStatus = false;
     @observable RecoveryButtonStatus = true;
+    @observable logContent = '';
 
     // 主程序名称指定为main_process
     @action onRunMainButtonClick = () => {
@@ -53,6 +54,45 @@ class Control {
     @action onRecovery = () => {
 
     };
+
+    @action runAdjust = (word, count, hand_type) => {
+        if (word === "") return false;
+        if (count === 0) return false;
+        let command = "python3 GetDataSet/get.py" + " --word ".concat(word) + " -n ".concat(count) + " --hand ".concat(hand_type);
+        session.connection.json({
+           "type": "kill",
+           "name": "main_process"
+        });
+        session.connection.json({
+            "type": "command",
+            "name": "judge_process",
+            "data": command
+        });
+        return true
+    };
+
+    @action stopAdjust = () => {
+        session.connection.json({
+            "type": "kill",
+            "name": "judge_process"
+        })
+    };
+
+    @action mergeAdjust = () => {
+        session.connection.json({
+            "type": "command",
+            "name": "merge_process",
+            "data": "python3 modelUpdate.py"
+        })
+    };
+
+    @action backAdjust = () => {
+        session.connection.json({
+            "type": "command",
+            "name": "back_process",
+            "data": "python3 backup.py"
+        })
+    }
 
 }
 

@@ -12,6 +12,8 @@ import Input from "@material-ui/core/Input"
 import InputLabel from "@material-ui/core/InputLabel"
 import Select from "@material-ui/core/Select"
 import MenuItem from "@material-ui/core/MenuItem"
+import FormControl from "@material-ui/core/FormControl"
+
 
 
 export default class AdjustLayout extends Component {
@@ -20,7 +22,8 @@ export default class AdjustLayout extends Component {
         startAdjust: PropTypes.func,
         stopAdjust: PropTypes.func,
         mergeAdjust: PropTypes.func,
-        logContent: PropTypes.string
+        logContent: PropTypes.string,
+        backforward: PropTypes.func
         // runAdjust: PropTypes.func,
         // runAdjustStatus: PropTypes.bool,
         // stopAdjust: PropTypes.func,
@@ -35,6 +38,8 @@ export default class AdjustLayout extends Component {
         adjustState: true,
         stopAdjustState: false,
         mergeNewModel: false,
+        backforward: false,
+        hand: 1
     };
 
     handleOnChange = name => event => {
@@ -42,10 +47,13 @@ export default class AdjustLayout extends Component {
     };
 
     runAdjust = () => {
-        this.setState({adjustState: false});
-        this.setState({stopAdjustState: true});
-        this.setState({mergeNewModel: false});
-        this.props.startAdjust();
+        let isSuccess = this.props.startAdjust(this.state.word, this.state.count, this.state.hand);
+        if (isSuccess) {
+            this.setState({adjustState: false});
+            this.setState({stopAdjustState: true});
+            this.setState({mergeNewModel: false});
+        }
+
     };
 
     stopAdjust = () => {
@@ -57,6 +65,11 @@ export default class AdjustLayout extends Component {
 
     mergeNewModel = () => {
         this.props.mergeAdjust();
+        this.setState({backforward: true})
+    };
+
+    backforward = () => {
+        this.props.backforward();
     };
 
     render() {
@@ -72,15 +85,29 @@ export default class AdjustLayout extends Component {
                     fullWidth
                 >
                 </TextField>
-                <TextField
-                    id="word"
-                    label="矫正次数"
-                    value={this.state.count}
-                    onChange={this.handleOnChange('count')}
-                    margin="normal"
-                    type="number"
-                >
-                </TextField>
+                <div className={classes.textFieldContainer}>
+                    <TextField
+                        id="word"
+                        label="矫正次数"
+                        value={this.state.count}
+                        onChange={this.handleOnChange('count')}
+                        margin="normal"
+                        type="number"
+                    >
+                    </TextField>
+                    <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="hand-helper">矫正词类型</InputLabel>
+                        <Select
+                            value={this.state.hand}
+                            onChange={this.handleOnChange('hand')}
+                            input={<Input name="hand" id="hand-helper" />}
+                        >
+                            <MenuItem value={1}>单手</MenuItem>
+                            <MenuItem value={2}>双手</MenuItem>
+                        </Select>
+                    </FormControl>
+                </div>
+
                 <div className={classes.buttonContainer}>
                     <Button variant="contained" color="primary"
                         disabled={!this.state.adjustState}
@@ -94,11 +121,19 @@ export default class AdjustLayout extends Component {
                     >
                         停止自校准功能
                     </Button>
+                </div>
+                <div className={classes.buttonContainer}>
                     <Button variant="contained" color="primary"
                         disabled={!this.state.mergeNewModel}
                         onClick={this.mergeNewModel}
                     >
                         融合新模型
+                    </Button>
+                    <Button variant="contained" color="primary"
+                        disabled={!this.state.backforward}
+                        onClick={this.backforward}
+                    >
+                        回退新模型
                     </Button>
                 </div>
                 <Card className={classes.logCard}>
