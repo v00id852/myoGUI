@@ -1,5 +1,6 @@
 import { observable, action } from 'mobx';
 import session from "./session"
+import chat from "./chat"
 
 class Control {
 
@@ -8,7 +9,8 @@ class Control {
     @observable RunMainButtonWithNewModelStatus = true;
     @observable StopMainButtonStatus = false;
     @observable RecoveryButtonStatus = true;
-    @observable logContent = '';
+
+    @observable RunMainStatus = false;
 
     // 主程序名称指定为main_process
     @action onRunMainButtonClick = () => {
@@ -22,8 +24,9 @@ class Control {
         session.connection.json({
             "type": "command",
             "name": "main_process",
-            "data": "python3 main.py"
+            "data": "python3 total.py"
         });
+        this.RunMainStatus = true;
     };
 
     @action onRunMainWithNewModelButtonClick = () => {
@@ -37,8 +40,9 @@ class Control {
         session.connection.json({
             "type": "command",
             "name": "main_process",
-            "data": "python3 main.py -n"
+            "data": "python3 total.py -n"
         });
+        this.RunMainStatus = true;
     };
 
     @action onStopMainButtonClick = () => {
@@ -48,7 +52,9 @@ class Control {
         session.connection.json({
             "type": "kill",
             "name": "main_process"
-        })
+        });
+        chat.closeChat();
+        this.RunMainStatus = false;
     };
 
     @action onRecovery = () => {
@@ -68,6 +74,11 @@ class Control {
             "name": "judge_process",
             "data": command
         });
+        this.RunMainStatus = false;
+        this.RunMainButtonStatus = true;
+        this.RunMainButtonWithNewModelStatus = true;
+        this.StopMainButtonStatus = false;
+
         return true
     };
 

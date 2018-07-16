@@ -23,7 +23,9 @@ export default class AdjustLayout extends Component {
         stopAdjust: PropTypes.func,
         mergeAdjust: PropTypes.func,
         logContent: PropTypes.string,
-        backforward: PropTypes.func
+        backforward: PropTypes.func,
+
+        mainRunStatus: PropTypes.string
         // runAdjust: PropTypes.func,
         // runAdjustStatus: PropTypes.bool,
         // stopAdjust: PropTypes.func,
@@ -52,6 +54,7 @@ export default class AdjustLayout extends Component {
             this.setState({adjustState: false});
             this.setState({stopAdjustState: true});
             this.setState({mergeNewModel: false});
+            this.props.mainRunStatus = false;
         }
 
     };

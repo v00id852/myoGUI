@@ -1,6 +1,10 @@
 
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import Typography from '@material-ui/core/Typography'
+
 import { observer, inject } from 'mobx-react';
 import randomColor from 'randomcolor';
 
@@ -18,7 +22,8 @@ import classes from './style.css';
     MainButtonStatus: stores.control.RunMainButtonStatus,
     RunMainButtonWithNewModelStatus: stores.control.RunMainButtonWithNewModelStatus,
     StopButtonStatus: stores.control.StopMainButtonStatus,
-    RecoveryButtonStatus: stores.control.RecoveryButtonStatus
+    RecoveryButtonStatus: stores.control.RecoveryButtonStatus,
+    logCardContent: stores.session.mainLogContent
 }))
 @observer
 export default class Contacts extends Component {
@@ -96,9 +101,9 @@ export default class Contacts extends Component {
             MainButtonStatus,
             RunMainButtonWithNewModelStatus,
             StopButtonStatus,
-            RecoveryButtonStatus
+            RecoveryButtonStatus,
+            logCardContent
         } = this.props;
-        // var { query, result } = this.props.filtered;
         //
         // if (query && result.length === 0) {
         //     return (
@@ -129,20 +134,22 @@ export default class Contacts extends Component {
                     </Button>
 
                     <Button classesName={classes.button} variant="contained" color="primary"
-                            onClick={onStopMainButtonClick}
+                            onClick={() => {onStopMainButtonClick(); logCardContent = "主程序已停止"}}
                             disabled={!StopButtonStatus}
                     >
                         停止主项目
                     </Button>
                 </div>
-                <div className={classes.row}>
-                    <Button classesName={classes.button} variant="contained" color="primary"
-                            onClick={onRecovery}
-                            disabled={!RecoveryButtonStatus}
-                    >
-                        恢复出厂设置
-                    </Button>
-                </div>
+                <Card className={classes.logCard}>
+                    <CardContent className={classes.logCardContent}>
+                        <Typography className={classes.cardTitle}>
+                            运行日志
+                        </Typography>
+                        <Typography variant="headline" className={classes.cardContent}>
+                            {this.props.logCardContent}
+                        </Typography>
+                    </CardContent>
+                </Card>
             </div>
         );
     }

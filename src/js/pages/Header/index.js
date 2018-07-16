@@ -17,13 +17,13 @@ export default class Header extends Component {
     getTitle() {
         switch (this.props.location.pathname) {
             case '/contacts':
-                return 'Contacts - WeWeChat';
+                return '控制界面';
 
             case '/settings':
-                return 'Settings - WeWeChat';
+                return '控制终端';
 
             default:
-                return 'WeWeChat';
+                return 'Myo手环GUI界面';
         }
     }
 

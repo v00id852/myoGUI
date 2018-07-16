@@ -10,7 +10,8 @@ export default class ChatLayout extends Component {
     static propTypes = {
         user: PropTypes.object,
         messages: PropTypes.object,
-        chatTo: PropTypes.func
+        chatTo: PropTypes.func,
+        isCloseChat: PropTypes.bool
     };
 
     renderMessages(list, from) {
@@ -79,7 +80,8 @@ export default class ChatLayout extends Component {
         });
     };
 
-    clearMessages = (list) => {
+    clearMessages = () => {
+        var list = this.props.messages.set(this.props.user.UserName);
         list.data = [];
         this.props.chatTo(this.props.user)
 
@@ -152,7 +154,7 @@ export default class ChatLayout extends Component {
                     })}
                     onClick={e => this.handleClick(e)}>
                     {
-                        this.props.user ? (
+                        (!this.props.isCloseChat && this.props.user) ? (
                             <div>
                                 <header>
                                     <div className={classes.info}>
@@ -181,7 +183,10 @@ export default class ChatLayout extends Component {
                                 <img
                                     className="disabledDrag"
                                     src="assets/images/noselected.png" />
-                                <h1>没有选择功能</h1>
+                                { this.props.isCloseChat ?
+                                    (<h1>对话已关闭</h1>) :
+                                    (<h1>没有选择功能</h1>)
+                                }
                             </div>
                         )
                     }

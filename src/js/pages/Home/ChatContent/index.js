@@ -22,8 +22,8 @@ import AdjustLayout from "./AdjustLayout/AdjustLayout";
     messages: stores.chat.messages,
     loading: stores.session.loading,
     shellUrl: stores.session.shellUrl,
-
     chatTo: stores.chat.chatTo,
+    isCloseChat: stores.chat.isCloseChat,
 
     reset: () => {
         stores.chat.user = false;
@@ -623,11 +623,12 @@ export default class ChatContent extends Component {
     }
 
     changeLayout() {
-        var { user, messages, shellUrl, chatTo } = this.props;
+        var { user, messages, shellUrl, chatTo, isCloseChat} = this.props;
         if (!user) return <ChatLayout user={user} messages={messages} chatTo={chatTo}/>;
         switch (user.UserName) {
             case '聊天':
-                return <ChatLayout user={user} messages={messages} chatTo={chatTo} />;
+                return <ChatLayout user={user} messages={messages} chatTo={chatTo}
+                                   isCloseChat={isCloseChat}/>;
             case '矫正':
                 return <AdjustLayout shellUrl={shellUrl}
                                      startAdjust={this.props.runAdjust}
@@ -637,7 +638,8 @@ export default class ChatContent extends Component {
                                      logContent={this.props.logContent}
                 />;
             default:
-                return <ChatLayout user={user} messages={messages} chatTo={chatTo}/>;
+                return <ChatLayout user={user} messages={messages}
+                                   chatTo={chatTo} isCloseChat={isCloseChat}/>;
         }
     }
 

@@ -24,9 +24,10 @@ class Session {
     @observable wsState = false;
     @observable incompleteMessage = '';
     @observable adjustLogContent = '';
+    @observable mainLogContent = '';
 
-    socketUrl = 'ws://192.168.8.101:2233?username=gui';
-    shellUrl = 'http://192.168.8.101:1122';
+    socketUrl = 'ws://192.168.8.102:2233?username=gui';
+    shellUrl = 'http://192.168.8.102:1122';
     syncKey;
 
     connectWs() {
@@ -64,6 +65,7 @@ class Session {
                     'nickname': '手环'
                 };
                 chat.addMessage(chatMessage, '聊天');
+                chat.chatTo(chat.user);
                 break;
             case 'voice':
                 chatMessage = {
@@ -92,7 +94,16 @@ class Session {
                 chat.chatTo(chat.user);
                 break;
             case 'adjust':
-                this.adjustLogContent = wsData.get('data')
+                this.adjustLogContent = wsData.get('data');
+                break;
+            case 'mainLog':
+                this.mainLogContent = wsData.get('data');
+                if (this.mainLogContent === '开始识别'){
+                    chat.startChat();
+                }
+                else if (this.mainLogContent === '结束识别') {
+                    chat.closeChat();
+                }
 
 
         }

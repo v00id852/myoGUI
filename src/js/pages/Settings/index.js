@@ -47,7 +47,7 @@ export default class Settings extends Component {
     render() {
         return (
             <div className={classes.tcontainer}>
-                <webview className={classes.terminal} ref="terminal" id="terminal" src="http://192.168.0.101:1122/" autosize="on" />
+                <webview className={classes.terminal} ref="terminal" id="terminal" src="http://192.168.8.101:1122/" autosize="on" />
             </div>
         );
     }
